@@ -9,9 +9,10 @@ lazy val root = project
   .in(file("."))
   .settings(commonSettings)
   .settings(noPublishSettings)
-  .aggregate(circe, tests)
+  .aggregate(circe, play, tests)
 
 lazy val CirceVersion = "0.9.0"
+lazy val PlayVersion = "2.6.7"
 lazy val ScanamoVersion = "1.0.0-M6"
 lazy val ScalaTestVersion = "3.0.4"
 
@@ -24,6 +25,21 @@ lazy val circe = project
     libraryDependencies ++=
       Seq(
         "io.circe" %% "circe-parser" % CirceVersion,
+        "com.gu" %% "scanamo" % ScanamoVersion,
+        "org.scalatest" %% "scalatest" % ScalaTestVersion % "test"
+      )
+  )
+  .dependsOn(tests % "test")
+
+lazy val play = project
+  .in(file("scanamo-play-json"))
+  .settings(commonSettings)
+  .settings(publishSettings)
+  .settings(
+    moduleName := "scanamo-play-json",
+    libraryDependencies ++=
+      Seq(
+        "com.typesafe.play" %% "play-json" % PlayVersion,
         "com.gu" %% "scanamo" % ScanamoVersion,
         "org.scalatest" %% "scalatest" % ScalaTestVersion % "test"
       )

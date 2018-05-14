@@ -18,3 +18,19 @@ Finally, the format can be imported with:
 ```
 
 This provides a `DynamoFormat[Json]`
+
+### Play Json
+
+First, add the dependency:
+
+```scala
+    libraryDependencies += "io.github.howardjohn" %% "scanamo-play-json" % "0.1.0"
+```
+
+Finally, the format can be imported with:
+
+```scala
+    import io.github.howardjohn.scanamo.PlayJsonDynamoFormat._
+```
+
+This provides a `DynamoFormat[JsValue]`
