@@ -23,9 +23,8 @@ lazy val circe = project
     moduleName := "scanamo-circe",
     libraryDependencies ++=
       Seq(
-        "io.circe" %% "circe-generic" % CirceVersion,
         "io.circe" %% "circe-parser" % CirceVersion,
-         "com.gu" %% "scanamo" % ScanamoVersion,
+        "com.gu" %% "scanamo" % ScanamoVersion,
         "org.scalatest" %% "scalatest" % ScalaTestVersion % "test"
       )
   )
