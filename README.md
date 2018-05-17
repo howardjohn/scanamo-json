@@ -8,7 +8,7 @@ Scanamo Json provides `DynamoFormat`s for popular Scala Json libraries. The form
 First, add the dependency:
 
 ```scala
-    libraryDependencies += "io.github.howardjohn" %% "scanamo-circe" % "0.1.0"
+    libraryDependencies += "io.github.howardjohn" %% "scanamo-circe" % "0.2.0"
 ```
 
 Finally, the format can be imported with:
@@ -24,7 +24,7 @@ This provides a `DynamoFormat[T]` for all `T` with both an `Encoder` and `Decode
 First, add the dependency:
 
 ```scala
-    libraryDependencies += "io.github.howardjohn" %% "scanamo-play-json" % "0.1.0"
+    libraryDependencies += "io.github.howardjohn" %% "scanamo-play-json" % "0.2.0"
 ```
 
 Finally, the format can be imported with:
