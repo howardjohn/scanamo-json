@@ -33,4 +33,4 @@ Finally, the format can be imported with:
     import io.github.howardjohn.scanamo.PlayJsonDynamoFormat._
 ```
 
-This provides a `DynamoFormat[JsValue]`
+This provides a `DynamoFormat[T]` for all `T` with a (play-json) `Format`.
