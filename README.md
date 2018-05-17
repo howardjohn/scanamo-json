@@ -1,5 +1,5 @@
 # Scanamo Json
-Scanamo Json provides `DynamoFormat`s for popular Scala Json libraries. The format will serialize directly to DynamoDB `AttributeValue`s, allowing full use of DynamoDB while allowing arbitrary Json objects to be stored.
+Scanamo Json provides `DynamoFormat`s for popular Scala Json libraries. The format will serialize directly to DynamoDB `AttributeValue`s, allowing full use of DynamoDB while allowing arbitrary Json objects to be stored or reusing existing formats.
 
 # Getting started
 
@@ -17,7 +17,7 @@ Finally, the format can be imported with:
     import io.github.howardjohn.scanamo.CirceDynamoFormat._
 ```
 
-This provides a `DynamoFormat[Json]`
+This provides a `DynamoFormat[T]` for all `T` with both an `Encoder` and `Decoder`.
 
 ### Play Json
 
