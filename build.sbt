@@ -1,7 +1,7 @@
 lazy val commonSettings = Seq(
   organization := "io.github.howardjohn",
   scalaVersion := "2.12.6",
-  version := "0.2.0",
+  version := "0.2.1",
   scalacOptions += "-Ypartial-unification"
 )
 
@@ -49,15 +49,16 @@ lazy val play = project
 lazy val tests = project
   .in(file("tests"))
   .settings(commonSettings)
-  .settings(noPublishSettings)
+  .settings(publishSettings)
   .settings(
-    moduleName := "tests",
+    moduleName := "scanamo-json-tests",
     libraryDependencies ++=
       Seq(
         "com.gu" %% "scanamo" % ScanamoVersion,
         "org.scalatest" %% "scalatest" % ScalaTestVersion
       )
   )
+
 lazy val noPublishSettings = Seq(
   publish := {},
   publishLocal := {},
