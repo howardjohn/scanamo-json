@@ -1,10 +1,10 @@
 package io.github.howardjohn.scanamo
 
-import com.amazonaws.services.dynamodbv2.document.Item
+import com.amazonaws.services.dynamodbv2.document.{Item, ItemUtils}
 import com.amazonaws.services.dynamodbv2.document.internal.InternalUtils
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import com.gu.scanamo.DynamoFormat
-import com.gu.scanamo.error.{DynamoReadError, TypeCoercionError}
+import org.scanamo.{DynamoFormat, DynamoValue}
+import org.scanamo.error.{DynamoReadError, TypeCoercionError}
 import play.api.libs.json.{Format, Json}
 
 import scala.collection.JavaConverters._
@@ -14,9 +14,9 @@ object PlayJsonDynamoFormat {
   private val placeholder = "document"
 
   implicit def format[T: Format]: DynamoFormat[T] = new DynamoFormat[T] {
-    def read(av: AttributeValue): Either[DynamoReadError, T] = {
-      val rawJson = InternalUtils
-        .toItemList(List(Map(placeholder -> av).asJava).asJava)
+    override def read(av: DynamoValue): Either[DynamoReadError, T] = {
+      val rawJson = ItemUtils
+        .toItemList(List(Map(placeholder -> av.toAttributeValue).asJava).asJava)
         .asScala
         .head
         .getJSON(placeholder)
@@ -24,9 +24,10 @@ object PlayJsonDynamoFormat {
         .map(f => TypeCoercionError(f))
     }
 
-    def write(t: T): AttributeValue = {
+    override def write(t: T): DynamoValue = {
       val item = new Item().withJSON(placeholder, Json.toJson(t).toString())
-      InternalUtils.toAttributeValues(item).get(placeholder)
+      DynamoValue.fromAttributeValue(ItemUtils.toAttributeValues(item).get(placeholder))
     }
+
   }
 }

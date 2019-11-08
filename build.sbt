@@ -1,6 +1,6 @@
 lazy val commonSettings = Seq(
   organization := "io.github.howardjohn",
-  scalaVersion := "2.12.6",
+  scalaVersion := "2.12.10",
   version := "0.2.1",
   scalacOptions += "-Ypartial-unification"
 )
@@ -11,9 +11,9 @@ lazy val root = project
   .settings(noPublishSettings)
   .aggregate(circe, play, tests)
 
-lazy val CirceVersion = "0.9.0"
+lazy val CirceVersion = "0.12.2"
 lazy val PlayVersion = "2.6.7"
-lazy val ScanamoVersion = "1.0.0-M6"
+lazy val ScanamoVersion = "1.0.0-M11"
 lazy val ScalaTestVersion = "3.0.4"
 
 lazy val circe = project
@@ -25,7 +25,7 @@ lazy val circe = project
     libraryDependencies ++=
       Seq(
         "io.circe" %% "circe-parser" % CirceVersion,
-        "com.gu" %% "scanamo" % ScanamoVersion,
+        "org.scanamo" %% "scanamo" % ScanamoVersion,
         "org.scalatest" %% "scalatest" % ScalaTestVersion % "test"
       )
   )
@@ -40,7 +40,7 @@ lazy val play = project
     libraryDependencies ++=
       Seq(
         "com.typesafe.play" %% "play-json" % PlayVersion,
-        "com.gu" %% "scanamo" % ScanamoVersion,
+        "org.scanamo" %% "scanamo" % ScanamoVersion,
         "org.scalatest" %% "scalatest" % ScalaTestVersion % "test"
       )
   )
@@ -54,7 +54,7 @@ lazy val tests = project
     moduleName := "scanamo-json-tests",
     libraryDependencies ++=
       Seq(
-        "com.gu" %% "scanamo" % ScanamoVersion,
+        "org.scanamo" %% "scanamo" % ScanamoVersion,
         "org.scalatest" %% "scalatest" % ScalaTestVersion
       )
   )
