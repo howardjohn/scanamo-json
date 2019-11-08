@@ -1,13 +1,13 @@
 package io.github.howardjohn.scanamo
 
-import com.gu.scanamo.DynamoFormat
 import org.scalatest.{Assertion, EitherValues, FunSuite, Matchers}
+import org.scanamo.DynamoFormat
 
 trait DynamoFormatBehavior extends Matchers with EitherValues { this: FunSuite =>
   def dynamoFormatTest[T](parse: String => Either[Any, T])(format: DynamoFormat[T]): Unit = {
     def roundTrip(input: String, expected: String): Assertion = {
       val json = parse(input)
-      val attribute = format.write(json.right.value)
+      val attribute = format.write(json.right.value).toAttributeValue
       val jsonResp = format.read(attribute)
       assert(expected === attribute.toString)
       assert(jsonResp === json)
