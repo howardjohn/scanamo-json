@@ -1,24 +1,38 @@
+lazy val scala212 = "2.12.10"
+lazy val scala213 = "2.13.1"
+lazy val supportedScalaVersions = List(scala212, scala213)
+
+scalaVersion in ThisBuild := scala212
+crossScalaVersions in ThisBuild := supportedScalaVersions
+
 lazy val commonSettings = Seq(
   organization := "io.github.howardjohn",
-  scalaVersion := "2.12.10",
-  version := "0.2.1",
-  scalacOptions += "-Ypartial-unification"
+  version := "0.2.1"
 )
+
+def commonOptions(scalaVersion: String) =
+  CrossVersion.partialVersion(scalaVersion) match {
+    case Some((2, 12)) =>
+      Seq("-Ypartial-unification")
+    case _ => Seq.empty
+  }
 
 lazy val root = project
   .in(file("."))
   .settings(commonSettings)
+  .settings(crossScalaVersions := Nil)
   .settings(noPublishSettings)
   .aggregate(circe, play, tests)
 
-lazy val CirceVersion = "0.12.2"
-lazy val PlayVersion = "2.6.7"
+lazy val CirceVersion = "0.12.3"
+lazy val PlayVersion = "2.8.0-M7"
 lazy val ScanamoVersion = "1.0.0-M11"
-lazy val ScalaTestVersion = "3.0.4"
+lazy val ScalaTestVersion = "3.0.8"
 
 lazy val circe = project
   .in(file("scanamo-circe"))
   .settings(commonSettings)
+  .settings(scalacOptions := commonOptions(scalaVersion.value))
   .settings(publishSettings)
   .settings(
     moduleName := "scanamo-circe",
@@ -34,6 +48,7 @@ lazy val circe = project
 lazy val play = project
   .in(file("scanamo-play-json"))
   .settings(commonSettings)
+  .settings(scalacOptions := commonOptions(scalaVersion.value))
   .settings(publishSettings)
   .settings(
     moduleName := "scanamo-play-json",
@@ -49,6 +64,7 @@ lazy val play = project
 lazy val tests = project
   .in(file("tests"))
   .settings(commonSettings)
+  .settings(scalacOptions := commonOptions(scalaVersion.value))
   .settings(publishSettings)
   .settings(
     moduleName := "scanamo-json-tests",
