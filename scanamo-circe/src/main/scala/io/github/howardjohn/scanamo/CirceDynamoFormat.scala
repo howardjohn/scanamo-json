@@ -1,13 +1,13 @@
 package io.github.howardjohn.scanamo
 
 import com.amazonaws.services.dynamodbv2.document.{Item, ItemUtils}
-import io.circe.parser.parse
+import io.circe.parser._
 import io.circe.syntax._
 import io.circe.{Decoder, Encoder}
-import org.scanamo.error.{DynamoReadError, TypeCoercionError}
-import org.scanamo.{DynamoFormat, DynamoValue}
+import org.scanamo.{DynamoFormat, DynamoReadError, DynamoValue, TypeCoercionError}
 
 import scala.collection.JavaConverters._
+import cats.implicits._
 
 object CirceDynamoFormat {
   private val placeholder = "document"
@@ -19,10 +19,7 @@ object CirceDynamoFormat {
         .asScala
         .head
         .getJSON(placeholder)
-      parse(rawJson)
-        .flatMap(_.as[T])
-        .left
-        .map(f => TypeCoercionError(f))
+      decode[T](rawJson).leftMap(TypeCoercionError.apply)
     }
 
     override def write(t: T): DynamoValue = {
