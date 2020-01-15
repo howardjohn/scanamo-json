@@ -7,7 +7,7 @@ crossScalaVersions in ThisBuild := supportedScalaVersions
 
 lazy val commonSettings = Seq(
   organization := "io.github.howardjohn",
-  version := "0.2.1"
+  version := "0.2.2-SNAPSHOT"
 )
 
 def commonOptions(scalaVersion: String) =
@@ -26,8 +26,8 @@ lazy val root = project
 
 lazy val CirceVersion = "0.12.3"
 lazy val PlayVersion = "2.8.0-M7"
-lazy val ScanamoVersion = "1.0.0-M11"
-lazy val ScalaTestVersion = "3.0.8"
+lazy val ScanamoVersion = "1.0.0-M12"
+lazy val ScalaTestVersion = "3.1.0-RC2"
 
 lazy val circe = project
   .in(file("scanamo-circe"))
