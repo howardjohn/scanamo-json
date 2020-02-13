@@ -1,3 +1,5 @@
+import sbt.Keys.{credentials, publishTo}
+
 lazy val scala212 = "2.12.10"
 lazy val scala213 = "2.13.1"
 lazy val supportedScalaVersions = List(scala212, scala213)
@@ -6,8 +8,7 @@ scalaVersion in ThisBuild := scala212
 crossScalaVersions in ThisBuild := supportedScalaVersions
 
 lazy val commonSettings = Seq(
-  organization := "io.github.howardjohn",
-  version := "0.2.2-SNAPSHOT"
+  organization := "io.laserdisc"
 )
 
 def commonOptions(scalaVersion: String) =
@@ -81,7 +82,37 @@ lazy val noPublishSettings = Seq(
   publishArtifact := false
 )
 
+
 lazy val publishSettings = Seq(
+  publishMavenStyle      := true,
+  Test / publishArtifact := true,
+  pomIncludeRepository   := (_ => false),
+  developers := List(
+    Developer(
+      id = "howardjohn",
+      name = "John Howard",
+      email = "johnbhoward96@gmail.com",
+      url = url("https://github.com/howardjohn/")
+    ),
+    Developer("semenodm", "Dmytro Semenov", "", url("https://github.com/semenodm"))
+  ),
+  scmInfo := Some(
+    ScmInfo(
+      url("https://github.com/laserdisc-io/fs2-aws/tree/master"),
+      "scm:git:git@github.com:laserdisc-io/fs2-aws.git",
+      "scm:git:git@github.com:laserdisc-io/fs2-aws.git"
+    )
+  ),
+  homepage := Some(url("https://github.com/laserdisc-io/fs2-aws/")),
+  licenses := Seq(
+    "MIT" -> url("https://raw.githubusercontent.com/laserdisc-io/fs2-aws/master/LICENSE")
+  ),
+  pgpPublicRing    := file(".travis/local.pubring.asc"),
+  pgpSecretRing    := file(".travis/local.secring.asc"),
+  releaseEarlyWith := SonatypePublisher
+)
+
+lazy val publishSettingsOld = Seq(
   homepage := Some(url("https://github.com/howardjohn/scanamo-json")),
   licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
   scmInfo := Some(
@@ -102,11 +133,18 @@ lazy val publishSettings = Seq(
   pomIncludeRepository := { _ =>
     false
   },
-  publishTo := {
-    val nexus = "https://oss.sonatype.org/"
-    if (isSnapshot.value)
-      Some("snapshots" at nexus + "content/repositories/snapshots")
-    else
-      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+  publishTo in ThisBuild := Some("Artifactory" at "https://moda.jfrog.io/moda/sbt"),
+  credentials += {
+    (sys.env.get("JFROG_USER"), sys.env.get("JFROG_PASS")) match {
+      case (Some(user), Some(pass)) => Credentials("Artifactory Realm", "moda.jfrog.io", user, pass)
+      case _ => Credentials(Path.userHome / "credentials.sbt")
+    }
   }
+//  publishTo := {
+//    val nexus = "https://oss.sonatype.org/"
+//    if (isSnapshot.value)
+//      Some("snapshots" at nexus + "content/repositories/snapshots")
+//    else
+//      Some("releases" at nexus + "service/local/staging/deploy/maven2")
+//  }
 )
